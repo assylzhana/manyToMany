@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/main.html">
+<head>
+  <meta charset="UTF-8">
+  <title>CRM</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+
+  <style>
+    .card {
+      background-color: #f2f5fa;
+      text-align: center;
+      width: 48%;
+      height: 150px;
+      margin-right: 2%;
+      display: inline-block;
+      overflow: hidden;
+    }
+
+    .card-title {
+      display: inline;
+      margin: 0;
+    }
+
+    .card-content {
+      font-size: 1.2rem;
+      font-family: Arial, sans-serif;
+      display: inline;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+<div layout:fragment="content">
+  <br>
+  <div class="row">
+    <div th:each="t : ${task}" class="col-md-6 mb-4">
+      <div class="card" style="width: 100%;">
+        <div class="card-body">
+          <div th:if="${!t.handled}">
+            <span style="color: red;" class="card-content">New</span>
+            <h5 class="card-title" th:text="'request from ' + ${t.user.fullName}"></h5>
+          </div>
+          <div th:if="${t.handled}">
+            <h5 class="card-title" th:text="'Request from ' + ${t.user.fullName}"></h5>
+          </div>
+          <p class="card-title" th:text="'course: ' + ${t.courseName}" style="display: inline;"></p>
+          <br>
+          <p class="card-title" th:text="'commentary: ' + ${t.commentary}" style="display: inline;"></p>
+          <br>
+          <p class="card-title" th:text="'phone: ' + ${t.phone}" style="display: inline;"></p>
+          <br>
+          <a th:href="${'/details/' + t.id}" >more...</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container mt-5">
+    <a href="/admin-panel" class="btn btn-primary btn-lg">Click Me</a>
+  </div>
+  <br>
+</div>
+
+</body>
+</html>

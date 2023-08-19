@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/main.html">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+        crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+          crossorigin="anonymous"></script>
+  <style>
+    .red {
+      color: red;
+    }
+  </style>
+</head>
+
+<body>
+<div layout:fragment="content">
+  <div>
+    <h5 th:if="${!task.handled}" class="red"> ***New request from customer***</h5>
+
+    <h1 th:text="${task.user.fullName}"></h1>
+    <p class="card-text" th:text="${task.courseName}"></p>
+    <h6 th:text="${task.phone}"></h6>
+    <h6 th:text="${task.commentary}"></h6>
+
+    <div th:if="${!task.handled}">
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#makeDone">
+        Make as Done
+      </button>
+    </div>
+    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete">
+      Delete task
+    </button>
+    <div th:if="${task.handled}">
+      <h3>Handled Request with Operators:</h3>
+      <ul>
+        <li th:each="operator : ${task.operators}">
+          <span th:text="${operator.name}"></span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <form th:action="${'/delete-task/'+task.id}" method="post">
+    <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5">Are you sure?</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">NO</button>
+            <button type="submit" class="btn btn-primary">YES</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <form th:if="${!task.handled}" th:action="@{/make-done/{id}(id=${task.id})}" method="post">
+    <div class="modal fade" id="makeDone" tabindex="-1" aria-labelledby="makeDone" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5">Choose Operators</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+          <table class="table">
+            <thead>
+            <tr>
+              <th></th>
+              <th>ID</th>
+              <th>NAME</th>
+              <th>SURNAME</th>
+              <th>DEPARTMENT</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="operator : ${operators}">
+              <td>
+                <input type="checkbox" th:id="${'operator_' + operator.id}" name="selectedOperators"
+                       th:value="${operator.id}"/>
+                <label th:for="${'operator_' + operator.id}" th:text="${operator.name}"></label>
+              </td>
+              <td th:text="${operator.id}"></td>
+              <td th:text="${operator.name}"></td>
+              <td th:text="${operator.surname}"></td>
+              <td th:text="${operator.department}"></td>
+            </tr>
+            </tbody>
+          </table>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">NO</button>
+            <button type="submit" class="btn btn-primary">YES</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+</body>
+</html>
