@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class OperatorService {
@@ -20,6 +19,6 @@ public class OperatorService {
 
 
     public List<Operator> getOperatorById(List<Long> selectedOperatorIds) {
-        return operatorRepository.findById(selectedOperatorIds);
+        return operatorRepository.findByIdIn(selectedOperatorIds);
     }
 }

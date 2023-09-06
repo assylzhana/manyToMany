@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface OperatorRepository extends JpaRepository<Operator, Long> {
-    List<Operator> findById(List<Long> selectedOperatorIds);
+    List<Operator> findByIdIn(List<Long> selectedOperatorIds);
 }
